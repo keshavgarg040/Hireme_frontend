@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import Candidates from "./Candidates.tsx";
-import Requirements from "./Requirements.tsx";
+import MyProfile from "../components/MyProfile";
+import Requirements from "../components/RequirementsTab";
 import NavHeader from "./NavHeader";
 
-const Tabs: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"candidates" | "requirements">("candidates");
+const CandidateView: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<"profile" | "requirements">("profile");
 
   return (
     <>
-      <NavHeader userType="recruiter" />
+      <NavHeader userType="candidate" />
       <div className="container mt-4">
         <ul className="nav nav-tabs">
           <li className="nav-item">
             <button
-              className={`nav-link ${activeTab === "candidates" ? "active" : ""}`}
-              onClick={() => setActiveTab("candidates")}
+              className={`nav-link ${activeTab === "profile" ? "active" : ""}`}
+              onClick={() => setActiveTab("profile")}
             >
-              Candidates
+              My Profile
             </button>
           </li>
           <li className="nav-item">
@@ -30,7 +30,7 @@ const Tabs: React.FC = () => {
         </ul>
 
         <div className="tab-content mt-3">
-          {activeTab === "candidates" && <Candidates />}
+          {activeTab === "profile" && <MyProfile />}
           {activeTab === "requirements" && <Requirements />}
         </div>
       </div>
@@ -38,4 +38,4 @@ const Tabs: React.FC = () => {
   );
 };
 
-export default Tabs;
+export default CandidateView;

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { UserCircle2, Building2 } from "lucide-react"; // Import icons from lucide-react
+import { UserCircle2, Building2 } from "lucide-react"; 
 
 export default function Login() {
   const navigate = useNavigate();

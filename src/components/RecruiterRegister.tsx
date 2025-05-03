@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FaUserTie, FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 
 const RecruiterRegister = () => {
   const [formData, setFormData] = useState({
@@ -26,71 +27,68 @@ const RecruiterRegister = () => {
     }
   };
 
+  const inputFields = [
+    { name: 'name', label: 'Full Name', type: 'text', icon: <FaUser className="text-success" /> },
+    { name: 'email', label: 'Email Address', type: 'email', icon: <FaEnvelope className="text-success" /> },
+    { name: 'password', label: 'Password', type: 'password', icon: <FaLock className="text-success" /> }
+  ];
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-green-200">
-      <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-xl">
-        <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-6">Recruiter Registration</h2>
+    <div className="vh-100 d-flex align-items-center justify-content-center bg-light">
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-md-6 col-lg-5">
+            <div className="card border-0 shadow-lg rounded-3">
+              <div className="card-body p-5">
+                <div className="text-center mb-4">
+                  <FaUserTie className="text-success mb-2" size={50} />
+                  <h2 className="h3 fw-bold">Recruiter Registration</h2>
+                  <p className="text-muted">Create your recruiter account</p>
+                </div>
 
-        {error && <div className="bg-red-100 text-red-600 p-3 rounded-md mb-4">{error}</div>}
+                {error && (
+                  <div className="alert alert-danger mb-4">{error}</div>
+                )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 rounded-md border border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-              required
-            />
+                <form onSubmit={handleSubmit}>
+                  {inputFields.map(({ name, label, type, icon }) => (
+                    <div className="mb-3" key={name}>
+                      <label htmlFor={name} className="form-label">
+                        {label}
+                      </label>
+                      <div className="input-group">
+                        <span className="input-group-text bg-light">
+                          {icon}
+                        </span>
+                        <input
+                          type={type}
+                          className="form-control"
+                          id={name}
+                          name={name}
+                          value={formData[name as keyof typeof formData]}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                  ))}
+
+                  <button
+                    type="submit"
+                    className="btn btn-success w-100 py-2 mt-4 mb-4"
+                  >
+                    Register
+                  </button>
+
+                  <div className="text-center">
+                    <Link to="/recruiterlogin" className="text-success text-decoration-none">
+                      Already have an account? Sign in
+                    </Link>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 rounded-md border border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 rounded-md border border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700 transition shadow-md"
-          >
-            Register
-          </button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <Link to="/recruiterlogin" className="text-green-600 font-medium hover:text-green-500 transition">
-            Already have an account? Sign in
-          </Link>
         </div>
       </div>
     </div>

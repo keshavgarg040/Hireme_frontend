@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FaBriefcase, FaEnvelope, FaLock } from 'react-icons/fa';
+import ToastNotification from './ToastNotification';
 
 const RecruiterLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [toast, setToast] = useState({
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error' | 'info' | 'warning'
+  });
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -13,60 +20,119 @@ const RecruiterLogin = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/recruiter/login', { email, password });
       localStorage.setItem('token', response.data.token);
-      navigate('/candidatedashboard');
+      
+      // Show success toast
+      setToast({
+        show: true,
+        message: "Login successful! Redirecting to your dashboard...",
+        type: "success"
+      });
+      
+      // Set a delay before redirecting to allow the toast to be visible
+      setTimeout(() => {
+        navigate('/candidatedashboard');
+      }, 1500);
+      
     } catch (err: any) {
       setError(err.response?.data?.message || 'An error occurred');
+      
+      // Show error toast
+      setToast({
+        show: true,
+        message: "Login failed. Please check your credentials.",
+        type: "error"
+      });
     }
   };
 
+  const closeToast = () => {
+    setToast(prev => ({ ...prev, show: false }));
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-green-200">
-      <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-xl">
-        <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-6">Recruiter Login</h2>
+    <div className="vh-100 d-flex align-items-center justify-content-center bg-light">
+      <ToastNotification
+        type={toast.type}
+        message={toast.message}
+        show={toast.show}
+        onClose={closeToast}
+      />
+      
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-md-6 col-lg-5">
+            <div className="card border-0 shadow-lg rounded-3">
+              <div className="card-body p-5">
+                <div className="text-center mb-4">
+                  <FaBriefcase className="text-success mb-2" size={60} />
+                  <h2 className="h3 fw-bold">Recruiter Login</h2>
+                  <p className="text-muted">Access your recruiter account</p>
+                </div>
 
-        {error && <div className="bg-red-100 text-red-600 p-3 rounded-md mb-4">{error}</div>}
+                {error && (
+                  <div className="alert alert-danger mb-4">{error}</div>
+                )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 rounded-md border border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-              required
-            />
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">
+                      Email Address
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-light">
+                        <FaEnvelope className="text-success" />
+                      </span>
+                      <input
+                        type="email"
+                        id="email"
+                        className="form-control"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label htmlFor="password" className="form-label">
+                      Password
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-light">
+                        <FaLock className="text-success" />
+                      </span>
+                      <input
+                        type="password"
+                        id="password"
+                        className="form-control"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn btn-success w-100 py-2 mb-4"
+                  >
+                    Sign In
+                  </button>
+
+                  <div className="text-center">
+                    <Link
+                      to="/recruiterregister"
+                      className="text-success text-decoration-none"
+                    >
+                      Don't have an account? Sign up
+                    </Link>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 rounded-md border border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700 transition shadow-md"
-          >
-            Sign In
-          </button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <Link to="/recruiterregister" className="text-green-600 font-medium hover:text-green-500 transition">
-            Don't have an account? Sign up
-          </Link>
         </div>
       </div>
     </div>

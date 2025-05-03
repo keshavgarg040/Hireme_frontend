@@ -7,6 +7,8 @@ import CandidateLogin from "./components/CandidateLogin";
 import CandidateRegister from "./components/CandidateRegister";
 import RecruiterRegister from "./components/RecruiterRegister";
 import RecruiterLogin from "./components/RecruiterLogin";
+import CandidateView from "./components/CandidateView";
+import MyProfile from "./components/MyProfile";
 
 const App: React.FC = () => {
   return (
@@ -17,6 +19,8 @@ const App: React.FC = () => {
         <Route path="/candidateregister" element={<CandidateRegister/>} />
         <Route path="/recruiterregister" element={<RecruiterRegister/>} />
         <Route path="/recruiterlogin" element={<RecruiterLogin/>} />
+        <Route path="/candidateview" element={<CandidateView/>} />
+        <Route path="/myProfile" element={<MyProfile/>} />
         <Route path="/candidatedashboard" element={<Tabs />} /> {/* Dashboard with Tabs */}
       </Routes>
     </Router>
