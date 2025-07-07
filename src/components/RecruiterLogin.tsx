@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaBriefcase, FaEnvelope, FaLock } from 'react-icons/fa';
 import ToastNotification from './ToastNotification';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const RecruiterLogin = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ const RecruiterLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/recruiter/login', { email, password });
+      const response = await axios.post(`${API_URL}/api/auth/recruiter/login`, { email, password });
       localStorage.setItem('token', response.data.token);
       
       // Show success toast

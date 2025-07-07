@@ -45,10 +45,11 @@ const RequirementsTab = () => {
   });
 
   const token = localStorage.getItem('token');
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/requirements', {
+      const res = await axios.get(`${API_URL}/requirements`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNewJobs(res.data);
@@ -59,7 +60,7 @@ const RequirementsTab = () => {
 
   const fetchAppliedJobs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/my-applications', {
+      const res = await axios.get(`${API_URL}/api/my-applications`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAppliedJobs(res.data);
@@ -85,7 +86,7 @@ const RequirementsTab = () => {
   const applyJob = async (jobId: number) => {
     try {
       await axios.post(
-        `http://localhost:5000/api/apply/${jobId}`,
+        `${API_URL}/api/apply/${jobId}`,
         { jobId },
         {
           headers: { Authorization: `Bearer ${token}` },

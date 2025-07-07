@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaUserPlus, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaTools, FaUserTag, FaLock } from 'react-icons/fa';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const CandidateRegister = () => {
   const [formData, setFormData] = useState({
@@ -24,11 +25,12 @@ const CandidateRegister = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/candidate/register', formData);
+      const response = await axios.post(`${API_URL}/api/auth/candidate/register`, formData);
       localStorage.setItem('token', response.data.token);
       navigate('/candidatelogin');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'An error occurred');
     }
   };
 

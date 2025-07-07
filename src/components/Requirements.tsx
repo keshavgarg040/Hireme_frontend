@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import ToastNotification from "./ToastNotification";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface Requirement {
   id: number;
@@ -44,7 +45,7 @@ const Requirements: React.FC = () => {
 
   const token = localStorage.getItem("token");
   const axiosWithAuth = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: API_URL,
     headers: { Authorization: `Bearer ${token}` },
   });
 

@@ -25,6 +25,7 @@ import {
 } from "react-icons/fa";
 import ToastNotification from "./ToastNotification";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface Candidate {
   id: number;
@@ -126,7 +127,7 @@ const Candidates: React.FC = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get<Candidate[]>("http://localhost:5000/candidates", {
+      .get<Candidate[]>(`${API_URL}/candidates`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -153,7 +154,7 @@ const Candidates: React.FC = () => {
     });
 
     // Fetch all job applications from the database
-    axios.get("http://localhost:5000/api/all-applications", {
+    axios.get(`${API_URL}/api/all-applications`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -256,8 +257,8 @@ const Candidates: React.FC = () => {
     const token = localStorage.getItem("token");
 
     const url = isEditMode
-      ? `http://localhost:5000/api/candidates/${editCandidateId}`
-      : "http://localhost:5000/api/auth/candidate/register";
+      ? `${API_URL}/api/candidates/${editCandidateId}`
+      : `${API_URL}/api/auth/candidate/register`;
 
     const method = isEditMode ? axios.put : axios.post;
 
@@ -360,7 +361,7 @@ const Candidates: React.FC = () => {
     const id = deleteConfirmation.candidateId;
     
     axios
-      .delete(`http://localhost:5000/api/candidates/${id}`, {
+      .delete(`${API_URL}/api/candidates/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

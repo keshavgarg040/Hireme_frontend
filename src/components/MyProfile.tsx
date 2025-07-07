@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaEdit, FaTrash, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaTools, FaTimes } from "react-icons/fa";
 import ToastNotification from "./ToastNotification";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface Candidate {
   id: number;
@@ -36,7 +37,7 @@ const MyProfile: React.FC = () => {
   const fetchProfile = async () => {
     const token = localStorage.getItem("token");
     try {
-      const res = await axios.get("http://localhost:5000/api/candidates/profile", {
+      const res = await axios.get(`${API_URL}/api/candidates/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCandidate(res.data);
@@ -54,7 +55,7 @@ const MyProfile: React.FC = () => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
-      await axios.put("http://localhost:5000/api/candidates/profile", updatedData, {
+      await axios.put(`${API_URL}/api/candidates/profile`, updatedData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setEditMode(false);
@@ -87,7 +88,7 @@ const MyProfile: React.FC = () => {
   const handleDelete = async () => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete("http://localhost:5000/api/candidates/profile", {
+      await axios.delete(`${API_URL}/api/candidates/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -104,7 +105,7 @@ const MyProfile: React.FC = () => {
       // Wait a moment before redirecting so user can see the toast
       setTimeout(() => {
         localStorage.removeItem("token");
-        window.location.href = "http://localhost:5173/";
+        window.location.href = "/";
       }, 2000);
     } catch (err) {
       console.error("Error deleting profile", err);

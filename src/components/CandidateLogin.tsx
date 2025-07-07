@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaUserCircle, FaEnvelope, FaLock } from "react-icons/fa";
 import ToastNotification from "./ToastNotification";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const CandidateLogin = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const CandidateLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/candidate/login",
+        `${API_URL}/api/auth/candidate/login`,
         { email, password }
       );
       localStorage.setItem("token", response.data.token);
@@ -35,8 +36,9 @@ const CandidateLogin = () => {
         navigate("/candidateview");
       }, 1500);
       
-    } catch (err: any) {
-      setError(err.response?.data?.message || "An error occurred");
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || "An error occurred");
       
       // Show error toast 
       setToast({

@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaUserTie, FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const RecruiterRegister = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -19,11 +21,12 @@ const RecruiterRegister = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/recruiter/register', formData);
+      const response = await axios.post(`${API_URL}/api/auth/recruiter/register`, formData);
       localStorage.setItem('token', response.data.token);
       navigate('/recruiterlogin');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'An error occurred');
     }
   };
 
